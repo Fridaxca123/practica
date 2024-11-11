@@ -20,7 +20,7 @@ mapa['Incident Category'] = df['Incident Category']
 mapa['Resolution'] = df['Resolution']
 mapa['lat'] = df['Latitude']
 mapa['lon'] = df['Longitude']
-mapa = mapa.dropna()
+mapa = mapa.dropna(subset=['lat', 'lon'])  # Asegurarse de que no haya valores nulos en lat/lon
 
 # Filtrado de datos en la barra lateral
 police_district_input = st.sidebar.multiselect(
@@ -45,5 +45,10 @@ if len(neighborhood_input) > 0:
 # Mostrar el DataFrame filtrado
 st.dataframe(subset_data)
 
+# Mostrar el mapa con los datos filtrados
+if not subset_data.empty:
+    st.map(subset_data[['lat', 'lon']])
+else:
+    st.write("No data available for the selected filters.")
 
 
